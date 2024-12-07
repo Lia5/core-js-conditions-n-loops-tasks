@@ -239,8 +239,24 @@ function convertNumberToString(numberStr) {
  *  '0123210'   => true
  *  'qweqwe'    => false
  */
-function isPalindrome(/* str */) {
-  throw new Error('Not implemented');
+function isPalindrome(str) {
+  let word = 0;
+  let reverse = 0;
+
+  while (str[reverse] !== undefined) {
+    reverse += 1;
+  }
+  reverse -= 1;
+
+  while (word < reverse) {
+    if (str[word] !== str[reverse]) {
+      return false;
+    }
+    word += 1;
+    reverse -= 1;
+  }
+
+  return true;
 }
 
 /**
@@ -257,8 +273,13 @@ function isPalindrome(/* str */) {
  *  'qwerty', 'Q'     => -1
  *  'qwerty', 'p'     => -1
  */
-function getIndexOf(/* str, letter */) {
-  throw new Error('Not implemented');
+function getIndexOf(str, letter) {
+  for (let i = 0; i < str.length; i += 1) {
+    if (str[i] === letter) {
+      return i;
+    }
+  }
+  return -1;
 }
 
 /**
@@ -276,8 +297,19 @@ function getIndexOf(/* str, letter */) {
  *  12345, 0    => false
  *  12345, 6    => false
  */
-function isContainNumber(/* num, digit */) {
-  throw new Error('Not implemented');
+function isContainNumber(num, digit) {
+  let currentNum = num;
+
+  while (currentNum > 0) {
+    const currentDigit = currentNum % 10;
+    if (currentDigit === digit) {
+      return true;
+    }
+
+    currentNum = Math.floor(currentNum / 10);
+  }
+
+  return false;
 }
 
 /**
@@ -293,10 +325,24 @@ function isContainNumber(/* num, digit */) {
  *  [2, 3, 9, 5] => 2       => 2 + 3 === 5 then balance element is 9 and its index = 2
  *  [1, 2, 3, 4, 5] => -1   => no balance element
  */
-function getBalanceIndex(/* arr */) {
-  throw new Error('Not implemented');
+function getBalanceIndex(arr) {
+  for (let i = 0; i < arr.length; i += 1) {
+    let leftSum = 0;
+    let rightSum = 0;
+    for (let j = 0; j < i; j += 1) {
+      leftSum += arr[j];
+    }
+    for (let k = i + 1; k < arr.length; k += 1) {
+      rightSum += arr[k];
+    }
+    if (leftSum === rightSum) {
+      return i;
+    }
+  }
+  return -1;
 }
 
+/** ***********  ✨ Codeium Command 🌟  ************ */
 /**
  * Generates a spiral matrix of a given size, filled with numbers in ascending order starting from one.
  * The direction of filling with numbers is clockwise.
@@ -318,8 +364,48 @@ function getBalanceIndex(/* arr */) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  const matrix = [];
+
+  for (let i = 0; i < size; i += 1) {
+    matrix[i] = [];
+    for (let j = 0; j < size; j += 1) {
+      matrix[i][j] = 0;
+    }
+  }
+
+  let value = 1;
+  let top = 0;
+  let bottom = size - 1;
+  let left = 0;
+  let right = size - 1;
+
+  while (value <= size * size) {
+    for (let i = left; i <= right; i += 1) {
+      matrix[top][i] = value;
+      value += 1;
+    }
+    top += 1;
+
+    for (let i = top; i <= bottom; i += 1) {
+      matrix[i][right] = value;
+      value += 1;
+    }
+    right -= 1;
+    for (let i = right; i >= left; i -= 1) {
+      matrix[bottom][i] = value;
+      value += 1;
+    }
+    bottom -= 1;
+
+    for (let i = bottom; i >= top; i -= 1) {
+      matrix[i][left] = value;
+      value += 1;
+    }
+    left += 1;
+  }
+
+  return matrix;
 }
 
 /**
@@ -337,8 +423,28 @@ function getSpiralMatrix(/* size */) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const inputMatrix = matrix;
+
+  const n = inputMatrix.length;
+
+  for (let i = 0; i < n; i += 1) {
+    for (let j = i + 1; j < n; j += 1) {
+      const temp = inputMatrix[i][j];
+      inputMatrix[i][j] = inputMatrix[j][i];
+      inputMatrix[j][i] = temp;
+    }
+  }
+
+  for (let i = 0; i < n; i += 1) {
+    for (let j = 0; j < Math.floor(n / 2); j += 1) {
+      const temp = inputMatrix[i][j];
+      inputMatrix[i][j] = inputMatrix[i][n - j - 1];
+      inputMatrix[i][n - j - 1] = temp;
+    }
+  }
+
+  return inputMatrix;
 }
 
 /**
@@ -356,6 +462,31 @@ function rotateMatrix(/* matrix */) {
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
 function sortByAsc(/* arr */) {
+  // const n = arr.length;
+  // const sortedArr = [];
+
+  // for (let i = 0; i < n; i += 1) {
+  //   sortedArr[i] = arr[i];
+  // }
+
+  // for (let i = 0; i < n - 1; i += 1) {
+  //   let minIndex = i;
+
+  //   for (let j = i + 1; j < n; j += 1) {
+  //     if (sortedArr[j] < sortedArr[minIndex]) {
+  //       minIndex = j;
+  //     }
+  //   }
+
+  //   if (minIndex !== i) {
+  //     const temp = sortedArr[i];
+  //     sortedArr[i] = sortedArr[minIndex];
+  //     sortedArr[minIndex] = temp;
+  //   }
+  // }
+
+  // return sortedArr;
+
   throw new Error('Not implemented');
 }
 
