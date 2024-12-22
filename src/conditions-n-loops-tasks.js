@@ -461,33 +461,21 @@ function rotateMatrix(matrix) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  // const n = arr.length;
-  // const sortedArr = [];
+function sortByAsc(arr) {
+  const n = arr.length;
+  const copyArr = arr;
 
-  // for (let i = 0; i < n; i += 1) {
-  //   sortedArr[i] = arr[i];
-  // }
+  for (let i = 1; i < n; i += 1) {
+    const current = copyArr[i];
+    let j = i - 1;
+    while (j >= 0 && copyArr[j] > current) {
+      copyArr[j + 1] = copyArr[j];
+      j -= 1;
+    }
+    copyArr[j + 1] = current;
+  }
 
-  // for (let i = 0; i < n - 1; i += 1) {
-  //   let minIndex = i;
-
-  //   for (let j = i + 1; j < n; j += 1) {
-  //     if (sortedArr[j] < sortedArr[minIndex]) {
-  //       minIndex = j;
-  //     }
-  //   }
-
-  //   if (minIndex !== i) {
-  //     const temp = sortedArr[i];
-  //     sortedArr[i] = sortedArr[minIndex];
-  //     sortedArr[minIndex] = temp;
-  //   }
-  // }
-
-  // return sortedArr;
-
-  throw new Error('Not implemented');
+  return copyArr;
 }
 
 /**
@@ -507,8 +495,23 @@ function sortByAsc(/* arr */) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+function shuffleChar(str, iterations) {
+  const n = str.length;
+  if (n === 0 || iterations === 0) return str;
+  let shuffledStr = str;
+  for (let iter = 0; iter < iterations; iter += 1) {
+    let evenChars = '';
+    let oddChars = '';
+    for (let i = 0; i < n; i += 1) {
+      if (i % 2 === 0) {
+        evenChars += shuffledStr[i];
+      } else {
+        oddChars += shuffledStr[i];
+      }
+    }
+    shuffledStr = evenChars + oddChars;
+  }
+  return shuffledStr;
 }
 
 /**
@@ -528,8 +531,27 @@ function shuffleChar(/* str, iterations */) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  const digits = [];
+  let temp = number;
+  while (temp > 0) {
+    digits.unshift(temp % 10);
+    temp = Math.floor(temp / 10);
+  }
+  const n = digits.length;
+  let i = n - 2;
+  while (i >= 0 && digits[i] >= digits[i + 1]) {
+    i -= 1;
+  }
+  if (i === -1) return number;
+  let j = n - 1;
+  while (digits[j] <= digits[i]) {
+    j -= 1;
+  }
+  [digits[i], digits[j]] = [digits[j], digits[i]];
+  const rightPart = digits.slice(i + 1).sort((a, b) => a - b);
+  const resultDigits = digits.slice(0, i + 1).concat(rightPart);
+  return resultDigits.reduce((num, digit) => num * 10 + digit, 0);
 }
 
 module.exports = {
