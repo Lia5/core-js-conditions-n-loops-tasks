@@ -538,20 +538,41 @@ function getNearestBigger(number) {
     digits.unshift(temp % 10);
     temp = Math.floor(temp / 10);
   }
-  const n = digits.length;
-  let i = n - 2;
+
+  let i = digits.length - 2;
   while (i >= 0 && digits[i] >= digits[i + 1]) {
     i -= 1;
   }
-  if (i === -1) return number;
-  let j = n - 1;
+
+  if (i === -1) {
+    return number;
+  }
+
+  let j = digits.length - 1;
   while (digits[j] <= digits[i]) {
     j -= 1;
   }
-  [digits[i], digits[j]] = [digits[j], digits[i]];
-  const rightPart = digits.slice(i + 1).sort((a, b) => a - b);
-  const resultDigits = digits.slice(0, i + 1).concat(rightPart);
-  return resultDigits.reduce((num, digit) => num * 10 + digit, 0);
+
+  const temp2 = digits[i];
+  digits[i] = digits[j];
+  digits[j] = temp2;
+
+  for (let left = i + 1; left < digits.length - 1; left += 1) {
+    for (let right = left + 1; right < digits.length; right += 1) {
+      if (digits[left] > digits[right]) {
+        const t = digits[left];
+        digits[left] = digits[right];
+        digits[right] = t;
+      }
+    }
+  }
+
+  let result = 0;
+  for (let k = 0; k < digits.length; k += 1) {
+    result = result * 10 + digits[k];
+  }
+
+  return result;
 }
 
 module.exports = {
